@@ -1,12 +1,17 @@
 
 import React, { useEffect, useState } from 'react';
+import Logo, { LogoIcon } from './Logo';
 
 interface OverlayContent {
   title: string;
   body: React.ReactNode;
 }
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigate?: (page: string, prefillService?: string) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [overlay, setOverlay] = useState<OverlayContent | null>(null);
 
@@ -27,32 +32,72 @@ const Footer: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const socialLinks = [
-    { name: 'Facebook', icon: 'fb', url: 'https://www.facebook.com/Qarvion' },
-    { name: 'Instagram', icon: 'ig', url: 'https://www.instagram.com/qarvion/' },
-    { name: 'X', icon: '𝕏', url: 'https://x.com/Qarvion' },
-    { name: 'Behance', icon: 'bē', url: 'https://behance.net' },
-    { name: 'YouTube', icon: 'yt', url: 'https://youtube.com' }
+  const socialLinks: { name: string; icon: React.ReactNode; url: string }[] = [
+    { 
+      name: 'Facebook', 
+      url: 'https://www.facebook.com/Qarvion',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      )
+    },
+    { 
+      name: 'X', 
+      url: 'https://x.com/Qarvion',
+      icon: (
+        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+        </svg>
+      )
+    },
+    { 
+      name: 'Pinterest', 
+      url: 'https://www.pinterest.com/murshiduzzamanDm/',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345-.09.375-.291 1.199-.334 1.357-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
+        </svg>
+      )
+    },
+    { 
+      name: 'Behance', 
+      url: 'https://www.behance.net/murshiduzzaman',
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.171 3-3.455 0-5.555-2.261-5.555-5.538 0-3.347 2.179-5.462 5.372-5.462 3.327 0 4.962 2.172 4.962 5.093 0 .426-.041.85-.097 1.207h-7.669c.105 1.547 1.144 2.454 2.778 2.454 1.357 0 2.227-.611 2.656-1.354l2.774.6zm-7.954-4.5h4.922c-.068-1.246-.948-2.025-2.385-2.025-1.458 0-2.392.793-2.537 2.025zm-9.772 7.5h-6v-16h6.721c3.084 0 5.279 1.487 5.279 4.417 0 1.761-1.062 3.111-2.483 3.691 1.736.574 2.762 2.183 2.762 4.148 0 3.344-2.544 3.744-6.279 3.744zm-3.455-6.553h2.895c1.47 0 2.56-.514 2.56-1.921 0-1.341-1.01-1.879-2.56-1.879h-2.895v3.8zm0-5.747h2.641c1.373 0 2.29-.441 2.29-1.688 0-1.229-.861-1.679-2.29-1.679h-2.641v3.367z"/>
+        </svg>
+      )
+    }
   ];
 
   const services = [
-    { name: "Brand Identity Design", id: "services" },
-    { name: "Motion Graphics", id: "services" },
-    { name: "Web Design & Development", id: "services" },
-    { name: "UI/UX Design", id: "services" },
-    { name: "Social Media Marketing", id: "services" },
-    { name: "Social Media Management", id: "services" },
-    { name: "Paid Ads Strategy", id: "services" },
-    { name: "Content Strategy", id: "services" }
+    { name: "Brand Identity Design", page: "services" },
+    { name: "Motion Graphics", page: "services" },
+    { name: "Web Design & Development", page: "services" },
+    { name: "UI/UX Design", page: "services" },
+    { name: "Social Media Marketing", page: "services" },
+    { name: "Social Media Management", page: "services" },
+    { name: "Paid Ads Strategy", page: "services" },
+    { name: "Packaging & Print Assets", page: "services" }
   ];
 
   const quickLinks = [
-    { name: "Home", id: "home", type: 'scroll' },
-    { name: "Services", id: "services", type: 'scroll' },
-    { name: "Our Work", id: "works", type: 'scroll' },
+    { name: "Home", page: "home", type: 'nav' },
+    { name: "About Us", page: "about", type: 'nav' },
+    { name: "Our Services", page: "services", type: 'nav' },
+    { name: "Our Work", page: "works", type: 'nav' },
+    { name: "Contact Us", page: "contact", type: 'nav' },
     { name: "Careers", id: "careers", type: 'page' },
     { name: "FAQ", id: "faq", type: 'page' }
   ];
+
+  const handleLinkClick = (e: React.MouseEvent, page: string, prefill?: string) => {
+    if (onNavigate) {
+      e.preventDefault();
+      onNavigate(page, prefill);
+    }
+  };
 
   const openPage = (id: string) => {
     const pages: Record<string, OverlayContent> = {
@@ -65,31 +110,37 @@ const Footer: React.FC = () => {
               <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                 <h4 className="text-white font-bold">Creative Lead</h4>
                 <p className="text-sm">Remote • Full-time</p>
+                <p className="text-xs text-blue-400 mt-1">Apply Now →</p>
               </div>
               <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                 <h4 className="text-white font-bold">Social Media Strategist</h4>
-                <p className="text-sm">Dubai, UAE • Hybrid</p>
+                <p className="text-sm">Dhaka, Bangladesh • Hybrid / Remote</p>
+                <p className="text-xs text-blue-400 mt-1">Apply Now →</p>
               </div>
             </div>
-            <p className="text-sm">Send your portfolio to <span className="text-blue-400">qarviontech@gmail.com</span></p>
+            <p className="text-sm">Send your portfolio or CV to our <span className="text-blue-400 font-bold">Creative Talent Desk</span></p>
           </div>
         )
       },
       faq: {
         title: "Frequently Asked Questions",
         body: (
-          <div className="space-y-6 text-white/70">
+          <div className="space-y-8 text-white/70">
             <div>
-              <h4 className="text-white font-bold">How long does a branding project take?</h4>
-              <p className="text-sm">Typically 2-4 weeks depending on the scope and refinement rounds.</p>
+              <h4 className="text-white font-bold mb-2">How long does a branding project take?</h4>
+              <p className="text-sm leading-relaxed">Typically 2-4 weeks depending on the scope of work and refinement rounds. We prioritize both quality and speed.</p>
             </div>
             <div>
-              <h4 className="text-white font-bold">Do you provide ongoing social media management?</h4>
-              <p className="text-sm">Yes, we have monthly packages for content creation and performance ad management.</p>
+              <h4 className="text-white font-bold mb-2">Do you provide ongoing social media management?</h4>
+              <p className="text-sm leading-relaxed">Yes, we offer monthly retainer packages for content creation, community management, and paid ad optimization.</p>
             </div>
             <div>
-              <h4 className="text-white font-bold">What industries do you work with?</h4>
-              <p className="text-sm">We specialize in Tech, Fashion, Wellness, and High-growth Startups.</p>
+              <h4 className="text-white font-bold mb-2">What industries do you specialize in?</h4>
+              <p className="text-sm leading-relaxed">We work extensively with Tech startups, E-commerce brands, Luxury fashion, and High-growth digital businesses.</p>
+            </div>
+            <div>
+              <h4 className="text-white font-bold mb-2">Do I get the source files?</h4>
+              <p className="text-sm leading-relaxed">Absolutely. Upon final payment, you receive full ownership and all high-resolution source files (AI, PSD, Figma, etc.).</p>
             </div>
           </div>
         )
@@ -97,19 +148,21 @@ const Footer: React.FC = () => {
       terms: {
         title: "Terms & Conditions",
         body: (
-          <div className="space-y-4 text-white/60 text-sm">
-            <p>1. Acceptance of Terms: By accessing Qarvion's services, you agree to comply with our policies.</p>
-            <p>2. Intellectual Property: Clients receive full ownership of final assets upon full payment.</p>
-            <p>3. Payments: Project retainers are non-refundable once creative work has begun.</p>
+          <div className="space-y-4 text-white/60 text-sm leading-relaxed">
+            <p>1. <strong className="text-white">Service Agreement:</strong> By hiring Qarvion, you agree to our project workflow and communication standards.</p>
+            <p>2. <strong className="text-white">Intellectual Property:</strong> Clients receive full copyright ownership of final designs upon completion and final payment.</p>
+            <p>3. <strong className="text-white">Revision Policy:</strong> Each project includes a set number of revision rounds as defined in your specific package.</p>
+            <p>4. <strong className="text-white">Payment Terms:</strong> Projects require a 50% non-refundable retainer to begin work, with the balance due upon completion.</p>
           </div>
         )
       },
       privacy: {
         title: "Privacy Policy",
         body: (
-          <div className="space-y-4 text-white/60 text-sm">
-            <p>We value your privacy. Your contact details are strictly used for project communication and are never shared with third parties.</p>
-            <p>Cookies are used solely to improve user experience on this landing page.</p>
+          <div className="space-y-4 text-white/60 text-sm leading-relaxed">
+            <p>Your privacy is paramount to us. Qarvion collects basic contact information solely for the purpose of project coordination and business communication.</p>
+            <p>We do not sell, trade, or share your personal data with third parties. Any assets or internal information shared during a project are protected under our standard NDA guidelines.</p>
+            <p>Cookies used on our site are strictly for performance monitoring and improving your browsing experience.</p>
           </div>
         )
       }
@@ -119,6 +172,11 @@ const Footer: React.FC = () => {
       setOverlay(pages[id]);
       document.body.style.overflow = 'hidden';
     }
+  };
+
+  const closeOverlay = () => {
+    setOverlay(null);
+    document.body.style.overflow = 'auto';
   };
 
   return (
@@ -135,9 +193,9 @@ const Footer: React.FC = () => {
           
           {/* Column 1: Brand */}
           <div className="space-y-8 footer-reveal visible">
-            <h2 className="text-3xl font-['Montserrat'] font-extrabold tracking-tighter text-white">
-              QARVION
-            </h2>
+            <div className="flex items-center">
+              <Logo size={44} textClassName="text-3xl font-extrabold tracking-tight" />
+            </div>
             <p className="text-white/40 leading-relaxed font-['Inter'] text-sm max-w-xs">
               We build powerful digital brands through strategy, design, motion, and high-performing social media marketing that drives real growth.
             </p>
@@ -151,7 +209,7 @@ const Footer: React.FC = () => {
                   className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/50 hover:text-[#00D2FF] hover:border-[#00D2FF]/50 hover:bg-[#00D2FF]/5 hover:scale-110 transition-all duration-400 group relative overflow-hidden"
                   aria-label={social.name}
                 >
-                  <span className="relative z-10 text-[10px] font-bold uppercase tracking-tighter">{social.icon}</span>
+                  <span className="relative z-10 flex items-center justify-center">{social.icon}</span>
                   <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </a>
               ))}
@@ -164,10 +222,13 @@ const Footer: React.FC = () => {
             <ul className="space-y-5">
               {services.map((item) => (
                 <li key={item.name}>
-                  <a href={`#${item.id}`} className="text-white/40 hover:text-[#00D2FF] transition-all text-sm font-['Inter'] relative group inline-block">
+                  <button 
+                    onClick={(e) => handleLinkClick(e, 'services', item.name)} 
+                    className="text-white/40 hover:text-[#00D2FF] transition-all text-sm font-['Inter'] relative group inline-block text-left cursor-pointer"
+                  >
                     {item.name}
                     <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#00D2FF] transition-all duration-500 group-hover:w-full"></span>
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -179,15 +240,18 @@ const Footer: React.FC = () => {
             <ul className="space-y-5">
               {quickLinks.map((item) => (
                 <li key={item.name}>
-                  {item.type === 'scroll' ? (
-                    <a href={`#${item.id}`} className="text-white/40 hover:text-[#00D2FF] transition-all text-sm font-['Inter'] relative group inline-block">
+                  {item.type === 'nav' ? (
+                    <button 
+                      onClick={(e) => handleLinkClick(e, item.page!)} 
+                      className="text-white/40 hover:text-[#00D2FF] transition-all text-sm font-['Inter'] relative group inline-block text-left cursor-pointer"
+                    >
                       {item.name}
                       <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#00D2FF] transition-all duration-500 group-hover:w-full"></span>
-                    </a>
+                    </button>
                   ) : (
                     <button 
-                      onClick={() => openPage(item.id)}
-                      className="text-white/40 hover:text-[#00D2FF] transition-all text-sm font-['Inter'] relative group inline-block text-left"
+                      onClick={() => openPage(item.id!)}
+                      className="text-white/40 hover:text-[#00D2FF] transition-all text-sm font-['Inter'] relative group inline-block text-left cursor-pointer"
                     >
                       {item.name}
                       <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#00D2FF] transition-all duration-500 group-hover:w-full"></span>
@@ -203,20 +267,21 @@ const Footer: React.FC = () => {
             <h4 className="text-white font-bold font-['Montserrat'] mb-10 uppercase tracking-[0.3em] text-[10px]">CONTACT</h4>
             <div className="space-y-8">
               <div>
-                <a href="mailto:qarviontech@gmail.com" className="text-white/70 hover:text-[#00D2FF] text-lg font-['Montserrat'] font-bold transition-all group block">
-                  qarviontech@gmail.com
+                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block mb-2">Agency Email</span>
+                <a href="mailto:qarviontech@gmail.com" className="text-white/70 hover:text-[#00D2FF] text-base font-['Montserrat'] font-bold transition-all group block">
+                  Official Studio Mailbox
                   <span className="block h-[1px] w-12 bg-[#00D2FF] mt-2 group-hover:w-24 transition-all"></span>
                 </a>
               </div>
               <div className="space-y-2">
-                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">WhatsApp</span>
+                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">WhatsApp & Phone</span>
                 <a 
-                  href="https://wa.me/8801781485506" 
+                  href="https://wa.me/8801725129901" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-white/50 font-['Inter'] block hover:text-green-400 transition-colors"
+                  className="text-white/70 font-semibold text-sm font-['Inter'] block hover:text-emerald-400 transition-colors"
                 >
-                  +880 1781-485506
+                  +880 1725-129901
                 </a>
               </div>
             </div>
@@ -243,32 +308,35 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* Page Overlay / Modal Simulation for "Separate Pages" */}
+      {/* Page Overlay / Modal Simulation */}
       {overlay && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-6">
           <div 
-            className="absolute inset-0 bg-black/80 backdrop-blur-xl" 
-            onClick={() => { setOverlay(null); document.body.style.overflow = 'auto'; }}
+            className="absolute inset-0 bg-black/90 backdrop-blur-2xl animate-fade-in" 
+            onClick={closeOverlay}
           ></div>
-          <div className="relative w-full max-w-2xl bg-[#0B1224] border border-white/10 rounded-[32px] p-8 md:p-12 shadow-2xl animate-float-slow">
+          <div className="relative w-full max-w-2xl bg-[#0B1224] border border-white/10 rounded-[40px] p-8 md:p-12 shadow-[0_0_100px_rgba(0,0,0,0.8)] overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00D2FF] to-transparent"></div>
             <button 
-              className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors"
-              onClick={() => { setOverlay(null); document.body.style.overflow = 'auto'; }}
+              className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors p-2"
+              onClick={closeOverlay}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-3xl font-['Montserrat'] font-bold text-white mb-6">{overlay.title}</h3>
+            <h3 className="text-3xl md:text-4xl font-['Montserrat'] font-bold text-white mb-8 pr-12">{overlay.title}</h3>
             <div className="max-h-[60vh] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-white/10">
-              {overlay.body}
+              <div className="font-['Inter']">{overlay.body}</div>
             </div>
-            <button 
-              className="mt-8 px-8 py-3 rounded-full bg-blue-600 text-white font-bold text-sm hover:bg-blue-500 transition-colors"
-              onClick={() => { setOverlay(null); document.body.style.overflow = 'auto'; }}
-            >
-              Close
-            </button>
+            <div className="mt-12 flex justify-center">
+              <button 
+                className="px-10 py-4 rounded-full bg-[#00D2FF] text-[#0B1224] font-bold transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(0,210,255,0.3)]"
+                onClick={closeOverlay}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -282,13 +350,16 @@ const Footer: React.FC = () => {
         </div>
 
         <div 
-          className="text-[20vw] md:text-[25vw] font-['Montserrat'] font-extrabold text-white/[0.05] leading-none text-center tracking-tighter whitespace-nowrap transition-transform duration-[1.5s] ease-out flex justify-center items-center"
+          className="text-[18vw] md:text-[22vw] font-['Montserrat'] font-extrabold text-white/[0.04] leading-none text-center tracking-tighter whitespace-nowrap transition-transform duration-[1.5s] ease-out flex justify-center items-center gap-6 md:gap-12"
           style={{ 
             transform: `translateX(${(scrollProgress - 0.5) * -150}px)`,
             filter: `blur(${Math.max(0, 5 - scrollProgress * 10)}px)`
           }}
         >
-          QARVION
+          <div className="opacity-20 scale-90 md:scale-100 flex items-center">
+            <LogoIcon size={120} className="w-[12vw] h-[12vw] max-w-[160px] max-h-[160px]" />
+          </div>
+          <span>QARVION</span>
         </div>
         
         <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent z-30"></div>

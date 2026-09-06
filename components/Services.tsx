@@ -12,25 +12,25 @@ const services: Service[] = [
   {
     id: 1,
     title: "Brand Identity Design",
-    description: "Make your product pop on the shelf. We design packaging & printing products that create an unboxing experience.",
-    image: "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?q=80&w=1470&auto=format&fit=crop"
+    description: "We craft cohesive visual systems that tell your brand's unique story. From color theory to typography, we ensure every touchpoint resonates with your target audience.",
+    image: "https://images.unsplash.com/photo-1634942537034-2531766767d1?q=80&w=1470&auto=format&fit=crop"
   },
   {
     id: 2,
     title: "Logo Design",
-    description: "Crafting iconic symbols that resonate with your audience and define your brand's presence in a crowded market.",
+    description: "Creating iconic symbols that capture the essence of your business. Our logos are designed for timeless appeal and scalability across all digital and physical mediums.",
     image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=1471&auto=format&fit=crop"
   },
   {
     id: 3,
     title: "Social Media Marketing",
-    description: "High-conversion posters for Instagram, Facebook, and LinkedIn to keep your audience engaged daily with fresh content.",
+    description: "Drive engagement and growth with data-backed social strategies. We create high-impact content that stops the scroll and turns followers into loyal customers.",
     image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1374&auto=format&fit=crop"
   },
   {
     id: 4,
     title: "Print & Identity Assets",
-    description: "Everything from premium business cards to comprehensive brand books. We ensure your brand is consistent across all physical touchpoints.",
+    description: "From premium business cards to full-scale corporate stationery. We bridge the gap between digital and physical with high-end print design solutions.",
     image: "https://images.unsplash.com/photo-1589330694653-ded6df03f754?q=80&w=1560&auto=format&fit=crop"
   }
 ];
@@ -83,14 +83,13 @@ const Services: React.FC = () => {
 
       <div className="space-y-4">
         {services.map((service, index) => (
-          /* Fix: Ensure ref callback returns void by wrapping assignment in braces */
           <div
             key={service.id}
             ref={(el) => { panelRefs.current[index] = el; }}
             data-index={index}
             onMouseEnter={() => handleInteraction(index)}
             onClick={() => handleInteraction(index)}
-            className={`service-panel cursor-pointer rounded-2xl md:rounded-3xl border border-white/5 relative group flex items-center ${
+            className={`service-panel cursor-pointer rounded-2xl md:rounded-3xl border border-white/5 relative group flex items-center transition-all duration-500 ease-in-out ${
               activeIndex === index ? 'active-panel' : ''
             }`}
           >
@@ -120,13 +119,13 @@ const Services: React.FC = () => {
               </div>
 
               {/* Right Side: Image with Reveal Mask */}
-              <div className="panel-image-mask flex-1 h-[200px] md:h-full w-full relative">
+              <div className="panel-image-mask flex-1 h-[250px] md:h-full w-full relative">
                 <div className="absolute inset-0 p-4 md:p-8">
                   <div className="w-full h-full rounded-xl md:rounded-2xl overflow-hidden relative shadow-2xl">
                     <img 
                       src={service.image} 
                       alt={service.title}
-                      className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      className="w-full h-full object-cover transition-all duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0B132B]/60 to-transparent"></div>
                   </div>

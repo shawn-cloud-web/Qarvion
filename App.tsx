@@ -1,33 +1,72 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Marquee from './components/Marquee';
-import Services from './components/Services';
-import Workflow from './components/Workflow';
-import Projects from './components/Projects';
-import WhyChooseUs from './components/WhyChooseUs';
-import Pricing from './components/Pricing';
-import ReviewsAndContact from './components/ReviewsAndContact';
-import Team from './components/Team';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ServicesPage from './pages/ServicesPage';
+import WorksPage from './pages/WorksPage';
+import ContactPage from './pages/ContactPage';
+
+const validPages = ['home', 'about', 'services', 'works', 'contact'];
 
 const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<string>(() => {
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    if (validPages.includes(hash)) {
+      return hash;
+    }
+    // Check if hash matches why-choose-us or team -> map to about
+    if (hash === 'why-choose-us' || hash === 'team') return 'about';
+    return 'home';
+  });
+
+  const [contactPrefill, setContactPrefill] = useState<string | undefined>(undefined);
+
+  // Synchronize with browser hash changes for back/forward navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (validPages.includes(hash)) {
+        setCurrentPage(hash);
+      } else if (hash === 'why-choose-us' || hash === 'team') {
+        setCurrentPage('about');
+      } else if (!hash) {
+        setCurrentPage('home');
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const navigateTo = (page: string, prefillService?: string) => {
+    const targetPage = validPages.includes(page) ? page : 'home';
+    setCurrentPage(targetPage);
+    if (prefillService) {
+      setContactPrefill(prefillService);
+    }
+    window.location.hash = targetPage === 'home' ? '' : targetPage;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen font-['Inter'] relative">
-      <Header />
-      <main>
-        <Hero />
-        <Services />
-        <WhyChooseUs />
-        <Projects />
-        <Pricing />
-        <Workflow />
-        <Team />
-        <ReviewsAndContact />
-        <Marquee />
+    <div className="min-h-screen font-['Inter'] relative text-white selection:bg-[#00D2FF] selection:text-[#0B132B]">
+      <Header currentPage={currentPage} onNavigate={navigateTo} />
+      
+      <main className="min-h-[80vh]">
+        {currentPage === 'home' && <HomePage onNavigate={navigateTo} />}
+        {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
+        {currentPage === 'services' && <ServicesPage onNavigate={navigateTo} />}
+        {currentPage === 'works' && <WorksPage onNavigate={navigateTo} />}
+        {currentPage === 'contact' && (
+          <ContactPage initialService={contactPrefill} onNavigate={navigateTo} />
+        )}
       </main>
-      <Footer />
+
+      <Footer onNavigate={navigateTo} />
+      <BackToTop />
       
       {/* Background Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none z-[-1]">

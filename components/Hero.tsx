@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { LogoIcon } from './Logo';
 
 const logos = [
   'TechCorp', 'Stellar', 'NexGen', 'Lumina', 'Zenith', 'Omni'
@@ -38,9 +39,9 @@ const Hero: React.FC = () => {
         
         {/* Glassmorphism Badge */}
         <div className="scroll-reveal flex justify-center [transition-delay:0.1s]">
-          <span className="inline-flex items-center px-5 py-2 rounded-full text-xs md:text-sm font-medium bg-white/5 border border-white/10 backdrop-blur-md text-[#00D2FF] tracking-wide uppercase">
-            <span className="w-2 h-2 rounded-full bg-[#00D2FF] mr-2 animate-pulse"></span>
-            170+ Projects Completed
+          <span className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full text-xs md:text-sm font-medium bg-white/5 border border-white/10 backdrop-blur-md text-[#00D2FF] tracking-wide uppercase">
+            <LogoIcon size={18} className="drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+            <span>170+ Projects Completed</span>
           </span>
         </div>
 

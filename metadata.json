@@ -1,5 +1,8 @@
 {
   "name": "Copy of Qarvion - Premium Digital Agency",
   "description": "A high-end modern agency landing page featuring a premium dark blue gradient theme, glassmorphism elements, and smooth scroll animations.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

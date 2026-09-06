@@ -61,7 +61,7 @@ const Workflow: React.FC = () => {
   }, []);
 
   return (
-    <section id="works" className="relative py-24 px-6 md:px-12 overflow-hidden">
+    <section id="workflow" className="relative py-24 px-6 md:px-12 overflow-hidden">
       {/* Decorative Floating Circle */}
       <div className="absolute -right-20 top-1/4 w-64 h-64 border border-[#00D2FF]/10 rounded-full animate-float opacity-30 pointer-events-none"></div>
       

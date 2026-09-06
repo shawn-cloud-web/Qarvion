@@ -6,66 +6,80 @@ interface PricingPlan {
   price: string;
   features: string[];
   isPopular?: boolean;
+  serviceKey: string;
 }
 
 const pricingData: Record<string, PricingPlan[]> = {
   logo: [
     {
       name: "Starter",
-      price: "79",
-      features: ["2 Logo Concepts", "High-Res JPG/PNG", "2 Revisions", "Basic Mockup", "3 Days Delivery"]
+      price: "49",
+      serviceKey: "Brand Identity Design",
+      features: ["2 Logo Concepts", "High-Res JPG/PNG", "2 Revisions", "Basic 3D Mockup", "2-3 Days Delivery"]
     },
     {
       name: "Growth",
-      price: "149",
+      price: "99",
+      serviceKey: "Brand Identity Design",
       isPopular: true,
-      features: ["3 Logo Concepts", "All Source Files", "Vector Format", "4 Revisions", "Social Media Kit", "5 Mockups", "Priority Support"]
+      features: ["4 Logo Concepts", "All Source Vector Files (AI/SVG/EPS)", "5 Revisions", "Social Media Starter Kit", "5 Realistic 3D Mockups", "Priority Support"]
     },
     {
       name: "Premium",
-      price: "249",
-      features: ["5 Premium Concepts", "Brand Mini Guide", "6 Revisions", "Stationery Design", "Full Copyright Ownership", "Priority Delivery", "3D Mockups"]
+      price: "179",
+      serviceKey: "Brand Identity Design",
+      features: ["6 Premium Concepts", "Brand Mini Style Guide", "Unlimited Revisions", "Stationery & Business Card Design", "Full Copyright Ownership", "Priority 24h Turnaround"]
     }
   ],
   brand: [
     {
       name: "Starter",
-      price: "299",
-      features: ["Brand Logo", "Color Palette", "Typography Pairings", "Brand Stationery", "Brand Assets", "4 Revisions"]
+      price: "149",
+      serviceKey: "Brand Identity Design",
+      features: ["Brand Logo Suite", "Color Palette & WCAG Tokens", "Typography Pairings", "Brand Stationery Design", "Core Social Media Templates", "4 Revisions"]
     },
     {
       name: "Growth",
-      price: "499",
+      price: "249",
+      serviceKey: "Brand Identity Design",
       isPopular: true,
-      features: ["Full Visual Identity", "Messaging & Tone", "Usage Guidelines", "Business Stationery", "Social Brand Kit", "Priority Support"]
+      features: ["Full Visual Identity System", "Messaging, Tone & Positioning", "25-Page Usage Guidelines PDF", "Business Stationery Suite", "Social Media Asset Kit", "Priority Support"]
     },
     {
       name: "Premium",
-      price: "899",
-      features: ["360 Identity Design", "Brand Strategy", "Comprehensive Guide", "Full Corporate Suit", "Iconography System", "Ongoing Consultation"]
+      price: "449",
+      serviceKey: "Web & UI/UX Design",
+      features: ["360 Brand & Digital System", "Brand Strategy Framework", "Comprehensive 35+ Page Guide", "Landing Page UI Mockup (Figma)", "Iconography System", "Ongoing Art Director Consultation"]
     }
   ],
   social: [
     {
       name: "Starter",
-      price: "199",
-      features: ["12 Posts / Month", "Caption Writing", "Hashtag Research", "Monthly Report", "Creative Ads", "Standard Support"]
+      price: "89",
+      serviceKey: "Social Media Marketing",
+      features: ["12 Custom Posts / Month", "Engaging Captions & Copy", "Hashtag & Audience Research", "Monthly Analytics Summary", "Story & Feed Formats", "Standard Support"]
     },
     {
       name: "Growth",
-      price: "349",
+      price: "159",
+      serviceKey: "Social Media Marketing",
       isPopular: true,
-      features: ["20 Posts / Month", "Custom Creatives", "Engagement Strategy", "Paid Ads Setup", "Biweekly Report", "Priority Ad Creative"]
+      features: ["20 Custom Branded Creatives", "Carousel Decks & Short Reels", "Community Engagement Strategy", "Paid Ads Setup & Split Testing", "Bi-weekly Strategy Review", "Priority Ad Creative Batches"]
     },
     {
       name: "Premium",
-      price: "599",
-      features: ["30 Posts / Month", "Advanced Ad Campaigns", "Funnel Strategy", "Weekly Optimization", "Dedicated Manager", "Full Production"]
+      price: "279",
+      serviceKey: "Paid Performance Ads",
+      features: ["30 Custom Branded Assets / Month", "Advanced Paid Funnel Campaigns", "Direct-Response Video Hooks", "Weekly Campaign Optimization", "Dedicated Performance Manager", "Full Asset Production"]
     }
   ]
 };
 
-const Pricing: React.FC = () => {
+interface PricingProps {
+  onNavigate?: (page: string, prefillService?: string) => void;
+}
+
+const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('logo');
   const [animate, setAnimate] = useState(true);
 
@@ -158,14 +172,22 @@ const Pricing: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <a 
-                href="#contact" 
-                className="relative w-full py-4 rounded-full font-bold font-['Montserrat'] text-white overflow-hidden group/btn transition-all duration-300 text-center block"
+              <button 
+                type="button"
+                onClick={() => {
+                  if (onNavigate) {
+                    onNavigate('contact', plan.serviceKey);
+                  } else {
+                    const el = document.getElementById('contact');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="relative w-full py-4 rounded-full font-bold font-['Montserrat'] text-white overflow-hidden group/btn transition-all duration-300 text-center block cursor-pointer"
               >
-                <span className="relative z-10">Secure Your Slot</span>
+                <span className="relative z-10">Select {plan.name} Package</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#1E3A8A] via-[#2563EB] to-[#3B82F6] group-hover/btn:brightness-125 transition-all"></div>
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover/btn:opacity-100 animate-shine transition-opacity"></div>
-              </a>
+              </button>
               <div className="absolute inset-0 rounded-[32px] overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="absolute top-0 left-[-100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/[0.05] to-transparent skew-x-[-25deg] transition-all duration-1000 group-hover:left-[150%]"></div>
               </div>
